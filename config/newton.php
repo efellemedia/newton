@@ -11,6 +11,7 @@ return [
     | frontend and whether or not you'd like to limit registrations down
     | to a specific email domain (e.g. @yourcompany.com).
     */
+    
     'registration' => [
         
         'enabled' => env('NEWTON_REGISTRATION_ENABLED', true),

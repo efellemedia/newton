@@ -1,9 +1,24 @@
-<div class="mb-3 bg-white border-bottom box-shadow">
-    <div class="container d-flex flex-column flex-md-row align-items-center p-3">
-        <h5 class="my-0 mr-md-auto font-weight-normal">Newton</h5>
+<b-navbar toggleable="md" type="dark" variant="dark" class="mb-5">
+    <div class="container">
+        <b-nav-toggle target="header-collapse"></b-nav-toggle>
+        <div class="d-flex align-items-center justify-content-around">
+            <a class="navbar-brand" href="/">
+                {{ config('app.name') }}
+            </a>
+        </div>
         
-        <a href="#" class="btn btn-outline-default mr-1">Register</a>
-        
-        <a href="#" class="btn btn-primary">Login</a>
+        @if(Auth::check())
+            <b-collapse is-nav id="header-collapse">
+                <b-navbar-nav>
+                    <b-nav-item href="{{ route('dashboard') }}">Dashboard</b-nav-item>
+                </b-navbar-nav>
+                
+                <b-nav is-nav-bar class="ml-auto">
+                    <b-nav-item-dropdown text="Hello, {{ auth()->user()->name }}" right>
+                        <logout-button csrf="{{ csrf_token() }}"></logout-button>
+                    </b-nav-item-dropdown>
+                </b-nav>
+            </b-collapse>
+        @endif
     </div>
-</div>
+</b-navbar>

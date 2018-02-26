@@ -11,12 +11,14 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
-        @include('partials._header')
-        
         <div id="app" v-cloak>
+            @include('partials._header')
+            
             <div class="container">
                 @yield('content')
             </div>
+            
+            <flash message="{{ session('flash.message') }}" level="{{ session('flash.level') ?? 'success' }}"></flash>
         </div>
         
         {{-- Scripts --}}
