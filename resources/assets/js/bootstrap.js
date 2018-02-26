@@ -10,7 +10,6 @@ Vue.use(BootstrapVue)
 window._ = _
 window.Vue = Vue
 window.axios = axios
-window.Chart = Chart
 window.events = new Vue()
 
 window.flash = function(message) {

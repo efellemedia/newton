@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -37,7 +38,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware(['guest', 'can.register']);
     }
 
     /**
@@ -48,11 +49,42 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+        $rules = [
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-        ]);
+        ];
+        
+        return Validator::make($data, $rules);
+    }
+    
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        if ($this->notUsingRegistrationDomain($request->get('email'))) {
+            return redirect('/register')
+                ->withInput()
+                ->with([
+                    'flash' => [
+                        'level'   => 'danger',
+                        'message' => 'Please use a valid domain to register with.'
+                    ]
+                ]);
+        }
+        
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 
     /**
@@ -63,10 +95,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $token = str_limit(md5($data['email'].str_random()), 25, '');
+        
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'name'               => $data['name'],
+            'email'              => $data['email'],
+            'password'           => bcrypt($data['password']),
+            'confirmation_token' => $token
         ]);
+    }
+    
+    protected function notUsingRegistrationDomain($email)
+    {
+        $userDomain   = strstr($email, '@');
+        $configDomain = config('newton.registration.domain');
+        
+        if ($configDomain and ($userDomain !== '@'.$configDomain)) {
+            return true;
+        }
+        
+        return false;
     }
 }

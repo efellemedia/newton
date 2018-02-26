@@ -28,6 +28,9 @@
         }
     },
     "autoload-dev": {
+        "files": [
+            "bootstrap/helpers/testing.php"
+        ],
         "psr-4": {
             "Tests\\": "tests/"
         }

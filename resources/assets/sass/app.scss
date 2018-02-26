@@ -1,2 +1,12 @@
 // Vendor
-@import "~@efelle/gravity-swatch/src/scss/gravity";
+@import "framework";
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+// html, body {
+//   background: white;
+// }
+//
+// .box-shadow {
+//   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+// }

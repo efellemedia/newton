@@ -1,6 +1,6 @@
 import './bootstrap';
 
-import Flash from './components/ExampleComponent.vue'
+import ExampleComponent from './components/ExampleComponent.vue'
 
 window.app = new Vue({
     el: '#app',

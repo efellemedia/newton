@@ -1,0 +1,20 @@
+/* Framework: Bootstrap v4.0.0-beta
+ *
+ * Includes variables over-ride file
+ *
+ * Framework may be customized by commenting out partials that
+ * are not necessary for your build.
+ *
+ * Please keep in mind commenting out CORE partials is not
+ * recommended and could result in errors on compliation.
+ *
+ * IMPORTANT: Bootstrap function must come before all other files (including variables). Do not reorder.
+ *
+ */
+
+// Call bootstrap functions first as variables are dependent on these functions.
+@import "~bootstrap/scss/functions";
+
+// Import our own variables
+@import "variables";
+@import "~@efelle/gravity-swatch/src/scss/gravity";

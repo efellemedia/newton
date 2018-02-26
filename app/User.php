@@ -15,7 +15,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'confirmed', 'confirmation_token'
+    ];
+    
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'confirmed' => 'boolean'
     ];
 
     /**
@@ -26,4 +35,19 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    /**
+     * A user can have many social links.
+     *
+     * @return HasMany
+     */
+    public function social()
+    {
+        return $this->hasMany(UserSocial::class);
+    }
+    
+    public function hasSocialLink($service)
+    {
+        return (bool) $this->social->where('service', $service)->count();
+    }
 }
