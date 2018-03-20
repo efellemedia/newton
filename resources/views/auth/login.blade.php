@@ -12,24 +12,24 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title text-center mb-4">Log in with your account</h4>
-                    
+
                     <div class="row">
-                        <div class="col border border-top-0 border-left-0 border-bottom-0 border-light">
-                            <div class="d-flex justify-content-center align-items-center h-100">
+                        <div class="col border border-top-0 border-left-0 border-bottom-0 border-light pt-4">
+                            <div class="d-flex justify-content-center">
                                 <a href="/login/redirect" class="btn btn-primary"> Log In With Efelle</a>
                             </div>
                         </div>
-                        
+
                         <div class="col">
                             <form method="POST" action="/login" accept-charset="UTF-8">
                                 @csrf
-                                
+
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input class="form-control" name="email" type="text" id="email">
@@ -45,14 +45,14 @@
                                         <input name="remember_me" type="checkbox" value="1"> <small>Remember me</small>
                                     </label>
                                 </div>
-                                
+
                                 <hr>
 
                                 <p class="text-center">
                                     <input class="btn btn-default" type="submit" value="Log In">
                                 </p>
                             </form>
-                            
+
                             @if (config('newton.registration.enabled'))
                                 <br>
 
